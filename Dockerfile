@@ -1,6 +1,7 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 
 MAINTAINER Nicolas Thal <nico.th4l@gmail.com>
+MAINTAINER Jérémy GIGNON <jeremy@gignon.fr>
 
 #COPY config/php.ini /usr/local/etc/php/
 
@@ -10,12 +11,11 @@ RUN pecl install redis \
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         libpq-dev \
         libxml2-dev \
         zlib1g-dev libicu-dev g++ \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt \
+    && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install opcache
 
-ADD config/symfony.ini /etc/php/7.1/fpm/conf.d/
+ADD config/symfony.ini /etc/php/7.2/fpm/conf.d/
 
 ADD config/adback.co.pool.conf /usr/local/etc/php-fpm.d/
 
