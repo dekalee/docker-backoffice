@@ -30,4 +30,12 @@ ADD config/symfony.ini /etc/php/7.2/fpm/conf.d/
 
 ADD config/adback.co.pool.conf /usr/local/etc/php-fpm.d/
 
+RUN apt-get update \
+    && apt-get install -y wget gnupg2 \
+    && wget -O - https://packagecloud.io/gpg.key | apt-key add - \
+    && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
+    && apt-get update \
+    && apt-get install blackfire-agent \
+    && apt-get install blackfire-php
+
 EXPOSE 9001
