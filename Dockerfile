@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 
 MAINTAINER Nicolas Thal <nico.th4l@gmail.com>
 MAINTAINER Jérémy GIGNON <jeremy@gignon.fr>
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libpq-dev \
         libxml2-dev \
+        libzip-dev \
         zlib1g-dev libicu-dev g++ \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -26,13 +27,14 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install opcache
 
-ADD config/symfony.ini /etc/php/7.2/fpm/conf.d/
+ADD config/symfony.ini /etc/php/7.3/fpm/conf.d/
 
 ADD config/adback.co.pool.conf /usr/local/etc/php-fpm.d/
 
 RUN apt-get update \
     && apt-get install -y wget gnupg2 \
     && wget -O - https://packagecloud.io/gpg.key | apt-key add - \
+    && wget -q -O - https://packages.blackfire.io/gpg.key | apt-key add - \
     && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
     && apt-get update \
     && apt-get install blackfire-agent \
