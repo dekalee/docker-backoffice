@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install opcache
 
 ADD config/symfony.ini /etc/php/7.3/fpm/conf.d/
+ADD config/memory.ini /usr/local/etc/php/conf.d/
 
 ADD config/adback.co.pool.conf /usr/local/etc/php-fpm.d/
 
